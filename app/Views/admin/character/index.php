@@ -1,14 +1,14 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h4>Liste des utilisateurs</h4>
+        <h4>Liste des personnages</h4>
         <a href="/admin/character/new"><i class="fa-solid fa-user-plus"></i></a>
     </div>
     <div class="card-body">
-        <table id="character" class="table table-hover">
+        <table id="tableCharacter" class="table table-hover">
             <thead>
             <tr>
                 <th>ID</th>
-                <th>lié à</th>
+                <th>Utilisateur</th>
                 <th>Nom</th>
                 <th>Force</th>
                 <th>Constitution</th>
@@ -25,9 +25,9 @@
 </div>
 
 <script>
-    $(document).ready(function (){
+    $(document).ready(function () {
         var baseUrl = "<?= base_url(); ?>";
-        var dataTable = $('#character').DataTable({
+        var dataTable = $('#tableCharacter').DataTable({
             "responsive": true,
             "processing": true,
             "serverSide": true,
@@ -41,8 +41,20 @@
             },
             "columns": [
                 {"data": "id"},
-                {"data": "user_id"}
-
+                {"data": "user_id"},
+                {"data": "name"},
+                {"data": "strengh"},
+                {"data": "constitution"},
+                {"data": "agility"},
+                {"data": "experience"},
+                {"data": "level"},
+                {
+                    data : 'id',
+                    sortable : false,
+                    render : function(data) {
+                        return `<a href="/admin/character/${data}"><i class="fa-solid fa-pencil"></i></a>`;
+                    }
+                },
             ]
         })
     })
