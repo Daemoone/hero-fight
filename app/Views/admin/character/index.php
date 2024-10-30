@@ -16,6 +16,7 @@
                 <th>Experience</th>
                 <th>Niveau</th>
                 <th>Modifier</th>
+                <th>Supprimer</th>
             </tr>
             </thead>
             <tbody>
@@ -55,7 +56,37 @@
                         return `<a href="/admin/character/${data}"><i class="fa-solid fa-pencil"></i></a>`;
                     }
                 },
+                {
+                    data : 'id',
+                    sortable : false,
+                    render : function(data) {
+                        return `<a class="swal2-character" id="${data}" swal2-title="Êtes-vous sûre de vouloir supprimer personnage ?" swal2-text="" href="<?= base_url('/admin/character/deletecharacter/');?> ${data}"><i class="fa-solid fa-trash text-danger"></i></a>`;
+                    }
+                }
             ]
-        })
+        });
+
+        $("body").on('click', '.swal2-character', function(event) {
+            event.preventDefault();
+            let title = $(this).attr("swal2-title");
+            let text = $(this).attr("swal2-text");
+            let link = $(this).attr('href');
+            let id = $(this).attr('id');
+            if (id == 1){
+                Swal.fire('On ne peut pas supprimer');
+            } else {
+                $.ajax({
+                    type: "GET",
+                    url: "<?= base_url('admin/character/totalcharacterbyid');?>",
+                    data: {
+                        id: id,
+                    },
+                    success: function (data) {
+                        let json = JSON.parse(data)
+                        console.log(json.total);
+                    }
+                })
+            }
+        });
     })
 </script>

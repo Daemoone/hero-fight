@@ -41,6 +41,11 @@
                                 <label for="level" class="form-label">Level</label>
                                 <input type="text" class="form-control" id="level" placeholder="level" value="<?= isset($character) ? $character['level'] : "" ?>" name="level">
                             </div>
+                            <div class="mb-3">
+                                <label for="user_id" class="form-label">Id Utilisateur</label>
+                                <input type="text" class="form-control" id="user_id" placeholder="utilisateur" value="<?= isset($character) ? $character['user_id'] : "" ?>" name="user_id">
+                            </div>
+
                         </div>
                     </div>
                 </div>

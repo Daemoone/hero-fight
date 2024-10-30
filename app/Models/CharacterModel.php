@@ -12,7 +12,7 @@ class CharacterModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['name', 'strengh', 'constitution', 'agility', 'experience', 'level', 'created_at', 'updated_at', 'deleted_at'];
+    protected $allowedFields    = ['name', 'strengh', 'constitution', 'agility', 'experience', 'level', 'created_at', 'updated_at', 'deleted_at', 'user_id'];
 
 
     // Dates
@@ -55,15 +55,10 @@ class CharacterModel extends Model
     public function getPaginatedCharacter($start, $length, $searchValue, $orderColumnName, $orderDirection)
     {
         $builder = $this->builder();
-        $builder->join('user_permission', 'user.id_permission = user_permission.id', 'left');
-        $builder->join('media', 'user.id = media.entity_id AND media.entity_type = "user"', 'left');
-        $builder->select('user.*, user_permission.name as permission_name, media.file_path as avatar_url');
 
         // Recherche
         if ($searchValue != null) {
-            $builder->like('username', $searchValue);
-            $builder->orLike('email', $searchValue);
-            $builder->orLike('user_permission.name', $searchValue);
+            $builder->like('name', $searchValue);
         }
 
         // Tri
@@ -76,27 +71,26 @@ class CharacterModel extends Model
         return $builder->get()->getResultArray();
     }
 
-    public function getTotalUser()
+    public function getTotalCharacter()
     {
         $builder = $this->builder();
-        $builder->join('user_permission', 'user.id_permission = user_permission.id');
         return $builder->countAllResults();
     }
 
-    public function getFilteredUser($searchValue)
+    public function getFilteredCharacter($searchValue)
     {
         $builder = $this->builder();
-        $builder->join('user_permission', 'user.id_permission = user_permission.id', 'left');
-        $builder->join('media', 'user.id = media.entity_id AND media.entity_type = "user"', 'left');
-        $builder->select('user.*, user_permission.name as permission_name, media.file_path as avatar_url');
 
         // @phpstan-ignore-next-line
         if (! empty($searchValue)) {
-            $builder->like('username', $searchValue);
-            $builder->orLike('email', $searchValue);
-            $builder->orLike('user_permission.name', $searchValue);
+            $builder->like('name', $searchValue);
         }
 
         return $builder->countAllResults();
+    }
+
+    public function getTotalCharacterById($id)
+    {
+        return $this->select('COUNT(*) AS total')->where(['id' => $id])->first();
     }
 }

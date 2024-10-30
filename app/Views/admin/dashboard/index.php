@@ -1,2 +1,2 @@
 <?php
-echo "coucou";
+echo "BIENVENUE A L'ACCUEIL ADMINISTRATEUR";

@@ -54,6 +54,12 @@ class Character extends BaseController
         $this->redirect("admin/character");
     }
 
+    public function gettotalcharacterbyid() {
+        $id = $this->request->getGet("id");
+        $character = model("CharacterModel");
+        return json_encode($character->getTotalCharacterById($id));
+    }
+
     public function postSearchCharacter()
     {
         $CharacterModel = model('App\Models\CharacterModel');
